@@ -1,0 +1,16 @@
+{
+    "workbench.colorTheme": "Default Dark Modern",
+    "workbench.preferredDarkColorTheme": "Default Dark Modern",
+    "editor.semanticHighlighting.enabled": "configuredByTheme",
+    "editor.tokenColorCustomizations": {
+        "[Default Dark Modern]": {
+            "comments": "#db9cff",
+            "keywords": "#51abff",
+            "types": "#ffb25a",
+            "strings":"#7eff89",
+            "variables": "#c77fff",
+            "functions": "#ffee55",
+            "numbers": "#00f7ff"
+        }
+    }
+}
