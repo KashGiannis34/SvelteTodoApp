@@ -1,14 +1,48 @@
+<script>
+    let todoList = [];
+    let currTodo = '';
+    let error = false;
+
+    function addTodo() {
+        error = false;
+        if (!currTodo) {
+            error = true;
+        }
+        todoList = [...todoList, currTodo];
+        currTodo = '';
+    }
+
+    function editTodo(index) {
+        currTodo = todoList[index];
+        todoList = todoList.slice(0, index).concat(todoList.slice(index+1, todoList.length));
+    }
+
+    function removeTodo(index) {
+
+    }
+</script>
+
 <div class="mainContainer">
     <div class="headerContainer">
         <h1>Todo List</h1>
         <button><i class="fa-regular fa-floppy-disk"></i><p>Save</p></button>
     </div>
     <main>
-
+        {#each todoList as todo, index}
+            <div class="todo">
+                <p>
+                    {index + 1}. {todo}
+                </p>
+                <div class="actions">
+                    <i on:click={() => {editTodo(index)}} on:keydown={() => {}} class="fa-regular fa-pen-to-square"></i>
+                    <i class="fa-solid fa-trash"></i>
+                </div>
+            </div>
+        {/each}
     </main>
-    <div class="enterTodo">
-        <input type="text" placeholder="Enter Todo"/>
-        <button>ADD</button>
+    <div class={"enterTodo" + (error ? " errorBorder":"")}>
+        <input bind:value={currTodo} type="text" placeholder="Enter Todo"/>
+        <button on:click={addTodo}>ADD</button>
     </div>
 </div>
 
@@ -53,12 +87,36 @@
         flex: 1;
     }
 
+    .todo {
+        border-left: 1px solid cyan;
+        padding: 8px 14px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+    }
+
+    .actions {
+        display: flex;
+        align-items: center;
+        gap: 14px;
+        font-size: 1.3rem;
+    }
+
+    .actions i:hover {
+        color: coral;
+        cursor: pointer;
+    }
+
     .enterTodo {
         display: flex;
         align-items: stretch;
         border: 1px solid #0891b2;
         border-radius: 5px;
         overflow: hidden;
+    }
+
+    .errorBorder {
+        border-color: coral !important;
     }
 
     .enterTodo input {
