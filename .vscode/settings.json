@@ -4,11 +4,11 @@
     "editor.semanticHighlighting.enabled": "configuredByTheme",
     "editor.tokenColorCustomizations": {
         "[Default Dark Modern]": {
-            "comments": "#db9cff",
+            "comments": "#f9f9f9",
             "keywords": "#51abff",
             "types": "#ffb25a",
-            "strings":"#7eff89",
-            "variables": "#c77fff",
+            "strings":"#db9cff",
+            "variables": "#7fff7f",
             "functions": "#ffee55",
             "numbers": "#00f7ff"
         }

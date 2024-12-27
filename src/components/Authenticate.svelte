@@ -1,27 +1,52 @@
 <script>
+    import { authHandlers } from "../store/store";
+
     let email = "";
     let password = "";
     let confirmPass = "";
     let error = false;
     let register = false;
-    function handleAuthenticate() {
+    let authenticating = false;
+
+    async function handleAuthenticate() {
+        if (authenticating) {
+            return;
+        }
+
         if (!email || !password || (register && !confirmPass)) {{
             error = true;
             return;
         }}
+
+        authenticating = true;
+
+        try {
+            if (!register) {
+                await authHandlers.login(email, password);
+            } else {
+                await authHandlers.signup(email, password);
+            }
+        } catch (err) {
+            console.log('There was an auth error', err);
+            error = true;
+            authenticating = false;
+        }
     }
 
     function handleRegister() {
         register = !register;
+        error = false;
     }
 </script>
 
 <div class="authContainer">
     <form>
         <h1>{register ? "Register":"Login"}</h1>
+
         {#if error}
         <p class="error">The information you have entered is not correct</p>
         {/if}
+
         <label>
             <p class={email ? 'above' : 'center'}>Email</p>
             <input bind:value={email} type="email" placeholder="Email" />
@@ -30,13 +55,21 @@
             <p class={password ? 'above' : 'center'}>Password</p>
             <input bind:value={password} type="password" placeholder="Password" />
         </label>
+
         {#if register}
         <label>
             <p class={confirmPass ? 'above' : 'center'}>Confirm Password</p>
             <input bind:value={confirmPass} type="password" placeholder="Confirm Password" />
         </label>
         {/if}
-        <button type="button">Submit</button>
+
+        <button type="button" class="submitButton" on:click={handleAuthenticate}>
+            {#if authenticating}
+                <i class="fa-solid fa-spinner spin"></i>
+            {:else}
+                Submit
+            {/if}
+        </button>
     </form>
     <div class="options">
         <p>Or</p>
@@ -113,6 +146,8 @@
         border-radius: 5px;
         cursor: pointer;
         font-size: 1rem;
+        display: grid;
+        place-items: center;
     }
 
     form button:hover {
@@ -148,6 +183,7 @@
     .error{
         color: coral;
         font-size: 0.9rem;
+        text-align: center;
     }
 
     .options{
@@ -196,5 +232,17 @@
     .options div p:last-of-type {
         color: cyan;
         cursor: pointer;
+    }
+
+    .spin {
+        animation: spin 2s infinite;
+    }
+
+    @keyframes spin {
+        from {
+            transform: rotate(0deg);
+        } to {
+            transform: rotate(360deg);
+        }
     }
 </style>
